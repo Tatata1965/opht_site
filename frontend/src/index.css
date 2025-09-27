@@ -8,21 +8,22 @@ body {
   background-color: #f3f4f6;
 }
 
-/* Добавьте эти стили для компонентов */
+/* Основной контейнер */
 .layout-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Header */
+/* Хэдер с правильным растяжением */
 .header {
   background-color: #1e40af;
   color: white;
-  padding: 16px 0;
+  padding: 12px 0; /* Уменьшили padding */
   position: sticky;
   top: 0;
   z-index: 100;
+  height: 50px; /* Чуть уменьшили */
 }
 
 .container {
@@ -36,17 +37,33 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+}
+
+/* Логотип - фиксированная ширина */
+.logo {
+  flex: 0 0 auto;
+  min-width: 200px;
 }
 
 .logo h1 {
   margin: 0;
   font-size: 1.8rem;
+  color: white; /* Белый вместо синего */
 }
 
 .logo p {
   margin: 0;
   font-size: 0.9rem;
-  opacity: 0.8;
+  opacity: 0.9; /* Чуть ярче */
+  color: white; /* Белый вместо синего */
+}
+
+/* Навигация - занимает все оставшееся пространство */
+.main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .main-nav ul {
@@ -54,32 +71,41 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 25px;
+  gap: 40px; /* Больше расстояния между пунктами */
 }
 
 .main-nav a {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
 .main-nav a:hover {
-  opacity: 0.8;
+  background-color: rgba(255,255,255,0.15);
 }
 
+/* Кнопки авторизации - фиксированная ширина */
 .header-actions {
+  flex: 0 0 auto;
+  min-width: 200px;
   display: flex;
+  justify-content: flex-end;
   gap: 12px;
 }
 
+
 .btn {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s;
+  font-size: 0.9rem;
 }
 
 .btn-primary {
@@ -100,118 +126,66 @@ body {
 .btn-secondary:hover {
   background-color: rgba(255,255,255,0.1);
 }
+
+/* Основной контент */
 .main-content {
   flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 10px 20px; /* Уменьшили верхний/нижний padding */
+  min-height: calc(100vh - 120px);
 }
 
-/* Упрощенный Footer */
+/* Минимальный Footer */
+/* Footer */
 .footer {
   background-color: #1f2937;
   color: white;
-  padding: 30px 0 15px;
-  font-size: 0.85rem;
+  padding: 12px 0; /* Уменьшили padding */
+  height: 50px; /* Чуть уменьшили */
+  display: flex;
+  align-items: center;
 }
 
-.footer-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 20px;
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.footer-col {
-  padding: 0 10px;
+.footer-left p {
+  margin: 0;
+  color: #ccc;
+  font-size: 0.9rem;
 }
 
-.footer-col h3 {
-  font-size: 1rem;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+.footer-center p {
+  margin: 0;
+  color: #fff;
+  font-weight: 500;
 }
 
-.footer-col h3::after {
-  width: 35px;
-  height: 1px;
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.footer-col p, .footer-col li {
-  margin-bottom: 6px;
-  line-height: 1.5;
+.footer-right span {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-left: 10px;
 }
 
-.partners {
-  gap: 6px;
+.footer-right a {
+  color: #ff6b00;
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.partners span {
-  padding: 3px 8px;
-  font-size: 0.75rem;
+.footer-right a:hover {
+  text-decoration: underline;
 }
-
-.footer-bottom {
-  padding-top: 15px;
-  font-size: 0.8rem;
-}
-
-/* Accordion - более компактный */
-.accordion-title {
-  padding: 6px 0;
-  font-size: 0.95rem;
-}
-
-.accordion-content {
-  padding: 8px 0;
-}
-
-/* На десктопах делаем еще компактнее */
-@media (min-width: 1024px) {
-  .footer {
-    padding: 25px 0 10px;
-  }
-
-  .footer-columns {
-    gap: 15px;
-  }
-
-  .footer-col h3 {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-  }
-}
-
-/* Горизонтальное меню в футере для больших экранов */
-@media (min-width: 768px) {
-  .footer-links-row {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 15px;
-  }
-
-  .footer-links-row a {
-    color: #e5e7eb;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s;
-  }
-
-  .footer-links-row a:hover {
-    color: #ff6b00;
-  }
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-/* Для сетки карточек */
+/* Остальные существующие стили оставляем как есть */
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -233,7 +207,6 @@ body {
   }
 }
 
-/* Для отступов */
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -248,7 +221,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* Текстовые стили */
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -262,7 +234,6 @@ body {
   text-align: center;
 }
 
-/* Для карточек */
 .bg-white {
   background-color: #fff;
 }
@@ -279,7 +250,6 @@ body {
   padding: 1rem;
 }
 
-/* Для формы */
 .w-full {
   width: 100%;
 }
@@ -311,3 +281,4 @@ body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

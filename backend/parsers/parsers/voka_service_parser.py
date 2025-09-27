@@ -10,6 +10,14 @@ class VokaServiceParser(BaseServiceParser):
     BASE_URL = 'https://voka.by'
     SERVICES_URL = f'{BASE_URL}/prices'
 
+    SERVICE_CATEGORIES = {
+        'Диагностика': ['диагностика', 'обследование', 'проверка', 'анализ', 'тест', 'осмотр'],
+        'Лазерная коррекция': ['лазерная', 'лазер', 'коррекция', 'фемто', 'рефракционная'],
+        'Хирургия': ['операция', 'хирурги', 'хирургия', 'удаление', 'имплантация'],
+        'Лечение': ['лечение', 'терапия', 'процедура', 'инъекция', 'капли', 'курс'],
+        'Консультация': ['консультация', 'приём', 'осмотр врача', 'визит']
+    }
+
     def parse_services(self):
         html = self.get_html(self.SERVICES_URL)
         if not html:
@@ -46,6 +54,11 @@ class VokaServiceParser(BaseServiceParser):
                     if not service_data:
                         continue
 
+                    # Проверка: является ли это настоящей услугой
+                    if not self.is_real_service(service_data['name'], service_data['description']):
+                        print(f"Пропущена категория/не услуга: {service_data['name']}")
+                        continue
+
                     # Проверка на дубликаты по названию и категории
                     service_id = f"{category}_{service_data['name']}"
                     if service_id in processed_services:
@@ -73,7 +86,40 @@ class VokaServiceParser(BaseServiceParser):
             for cat in categories_without_services:
                 print(f" - {cat}")
 
+        # Статистика парсинга
+        services_with_price = len([s for s in services if s.price and s.price > 0])
+        total_services = len(services)
+
+        print(f"\n=== СТАТИСТИКА VOKA ===")
+        print(f"Всего услуг: {total_services}")
+        print(f"Услуг с ценами: {services_with_price}")
+        print(f"Услуг без цен: {total_services - services_with_price}")
+        if total_services > 0:
+            print(f"Процент покрытия цен: {services_with_price / total_services * 100:.1f}%")
+
         return services
+
+    def is_real_service(self, name, description):
+        """Проверяет, является ли текст настоящей услугой, а не категорией"""
+        # Исключаем слишком короткие названия
+        if len(name.strip()) < 5:
+            return False
+
+        # Ключевые слова, указывающие на категории, а не услуги
+        category_indicators = [
+            'категория', 'отделение', 'услуги', 'диагностика', 'лечение',
+            'обследование', 'консультация', 'лазерная', 'хирургическое',
+            'комплекс', 'программа', 'пакет', 'направление', 'виды'
+        ]
+
+        # Проверяем название
+        name_lower = name.lower()
+        if any(indicator in name_lower for indicator in category_indicators):
+            # Если это похоже на категорию, проверяем длину
+            if len(name) < 25:  # Короткие названия скорее категории
+                return False
+
+        return True
 
     def clean_category_name(self, name):
         """Очистка названия категории от лишних символов"""
@@ -109,6 +155,9 @@ class VokaServiceParser(BaseServiceParser):
             price_text = price_elem.get_text(strip=True)
             price = self.parse_price(price_text)
 
+        # Улучшенная категоризация
+        final_category = self.categorize_service(name, description, category)
+
         # Безопасное извлечение длительности
         duration = None
         try:
@@ -117,7 +166,7 @@ class VokaServiceParser(BaseServiceParser):
             print(f"Ошибка извлечения длительности: {e}")
 
         # Генерация уникального ID с учетом категории
-        external_id = f"voka_{category}_{name}"
+        external_id = f"voka_{final_category}_{name}"
         external_id = re.sub(r'\W+', '_', external_id.lower())[:100]
 
         return {
@@ -126,27 +175,47 @@ class VokaServiceParser(BaseServiceParser):
             'description': description[:1000],
             'price': price,
             'duration': duration,
-            'category': category
+            'category': final_category
         }
 
     def parse_price(self, text):
-        """Извлекает цену из текста"""
-        if 'бесплатно' in text.lower() or 'даром' in text.lower():
-            return 0.0
-
-        text = text.replace(' ', '').replace(' ', '')
-
-        # Игнорируем некорректные значения цен
-        if '-' in text or '—' in text:
+        """Улучшенное извлечение цены из текста"""
+        if not text:
             return None
 
-        match = re.search(r'(\d+[.,]?\d*)', text)
-        if match:
-            try:
-                price_str = match.group(1).replace(',', '.')
-                return float(price_str)
-            except ValueError:
-                return None
+        text_lower = text.lower()
+
+        # Проверка на бесплатные услуги
+        if any(word in text_lower for word in ['бесплатно', 'даром', 'бесплатная']):
+            return 0.0
+
+        # Очистка текста
+        text_clean = text.replace(' ', '').replace(' ', '').replace(' ', '')
+
+        # Игнорируем диапазоны цен ("100-200 руб")
+        if '-' in text_clean or '—' in text_clean or 'от' in text_lower:
+            return None
+
+        # Расширенные паттерны для поиска цен
+        price_patterns = [
+            r'(\d+[.,]\d+)\s*(?:BYN|руб|р\.|₽|б\.р\.)',
+            r'(\d+)\s*(?:BYN|руб|р\.|₽|б\.р\.)',
+            r'(?:стоимость|цена)[:\s]*(\d+[.,]?\d*)',
+            r'(\d+[.,]?\d*)\s*(?:BYN|руб)',
+        ]
+
+        for pattern in price_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    price_str = match.group(1).replace(',', '.')
+                    price_val = float(price_str)
+                    # Проверка на разумность цены (от 1 до 10000 BYN)
+                    if 1 <= price_val <= 10000:
+                        return price_val
+                except (ValueError, IndexError):
+                    continue
+
         return None
 
     def extract_duration(self, text):
@@ -169,3 +238,30 @@ class VokaServiceParser(BaseServiceParser):
             else:
                 return timedelta(minutes=value)
         return None
+
+    def categorize_service(self, name, description, original_category):
+        """Улучшенная категоризация услуг"""
+        text = f"{name} {description}".lower()
+
+        for category, keywords in self.SERVICE_CATEGORIES.items():
+            if any(keyword in text for keyword in keywords):
+                return category
+
+        # Если не нашли категорию, используем оригинальную из парсера
+        return self.clean_category_name(original_category) if len(original_category) < 50 else 'Другие услуги'
+
+    def save_service(self, service_info):
+        """Сохранение или обновление услуги в базе данных"""
+        external_id = f"voka_{service_info['category']}_{service_info['name']}"
+        external_id = re.sub(r'\W+', '_', external_id.lower())[:100]
+
+        service_data = {
+            'external_id': external_id,
+            'name': service_info['name'][:255],
+            'description': service_info.get('description', '')[:1000],
+            'price': service_info.get('price'),
+            'duration': service_info.get('duration'),
+            'category': service_info.get('category', 'Основные услуги'),
+        }
+
+        return super().save_service(service_data)

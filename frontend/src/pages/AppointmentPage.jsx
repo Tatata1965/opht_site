@@ -146,75 +146,75 @@ const AppointmentPage = () => {
 
         <form onSubmit={handleSubmit}>
           {selectedService && (
-            <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#eef2ff', borderRadius: '6px' }}>
-              <h3 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Выбранная услуга:</h3>
-              <p style={{ margin: '5px 0' }}>{selectedService.name}</p>
-              {selectedService.price && (
-                <p style={{ margin: '5px 0' }}>Стоимость: {selectedService.price} BYN</p>
-              )}
-            </div>
+              <div style={{marginBottom: '20px', padding: '15px', backgroundColor: '#eef2ff', borderRadius: '6px'}}>
+                <h3 style={{fontWeight: 'bold', marginBottom: '10px'}}>Выбранная услуга:</h3>
+                <p style={{margin: '5px 0'}}>{selectedService.name}</p>
+                {selectedService.price && (
+                    <p style={{margin: '5px 0'}}>Стоимость: {selectedService.price} BYN</p>
+                )}
+              </div>
           )}
 
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Врач *</label>
+          <div style={{marginBottom: '15px'}}>
+            <label style={{display: 'block', marginBottom: '8px', fontWeight: '500'}}>Врач *</label>
             <select
-              name="doctor"
-              value={formData.doctor}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px' }}
+                name="doctor"
+                value={formData.doctor}
+                onChange={handleChange}
+                required
+                style={{width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px'}}
             >
               <option value="">Выберите врача</option>
               {doctors.map(doctor => (
-                <option key={doctor.id} value={doctor.id}>
-                  {doctor.last_name} {doctor.first_name} {doctor.middle_name} - {doctor.specialization}
-                </option>
+                  <option key={doctor.id} value={doctor.id}>
+                    {doctor.last_name} {doctor.first_name} {doctor.middle_name} - {doctor.specialization} ({doctor.clinic_display})
+                  </option>
               ))}
             </select>
           </div>
 
           {!serviceId && (
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Услуга *</label>
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px' }}
-              >
-                <option value="">Выберите услугу</option>
-                {services.map(service => (
-                  <option key={service.id} value={service.id}>
-                    {service.name} {service.price && `- ${service.price} BYN`}
-                  </option>
-                ))}
-              </select>
-            </div>
+              <div style={{marginBottom: '15px'}}>
+                <label style={{display: 'block', marginBottom: '8px', fontWeight: '500'}}>Услуга *</label>
+                <select
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    required
+                    style={{width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px'}}
+                >
+                  <option value="">Выберите услугу</option>
+                  {services.map(service => (
+                      <option key={service.id} value={service.id}>
+                        {service.name} {service.price && `- ${service.price} BYN`}
+                      </option>
+                  ))}
+                </select>
+              </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px'}}>
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Дата *</label>
+              <label style={{display: 'block', marginBottom: '8px', fontWeight: '500'}}>Дата *</label>
               <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-                min={new Date().toISOString().split('T')[0]}
-                style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px' }}
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                  style={{width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px'}}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Время *</label>
+              <label style={{display: 'block', marginBottom: '8px', fontWeight: '500'}}>Время *</label>
               <select
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                required
-                style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px' }}
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  required
+                  style={{width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px'}}
               >
                 <option value="">Выберите время</option>
                 <option value="09:00">09:00</option>
@@ -230,32 +230,32 @@ const AppointmentPage = () => {
             </div>
           </div>
 
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Комментарий</label>
+          <div style={{marginBottom: '15px'}}>
+            <label style={{display: 'block', marginBottom: '8px', fontWeight: '500'}}>Комментарий</label>
             <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="3"
-              style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px' }}
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows="3"
+                style={{width: '100%', padding: '10px', border: '1px solid #ced4da', borderRadius: '4px'}}
             ></textarea>
           </div>
 
           <button
-            type="submit"
-            disabled={isLoading}
-            style={{
-              width: '100%',
-              backgroundColor: isLoading ? '#9ca3af' : '#3b82f6',
-              color: 'white',
-              padding: '12px',
-              borderRadius: '6px',
-              border: 'none',
-              fontWeight: 'bold',
-              fontSize: '1rem',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.3s'
-            }}
+              type="submit"
+              disabled={isLoading}
+              style={{
+                width: '100%',
+                backgroundColor: isLoading ? '#9ca3af' : '#3b82f6',
+                color: 'white',
+                padding: '12px',
+                borderRadius: '6px',
+                border: 'none',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                transition: 'background-color 0.3s'
+              }}
           >
             {isLoading ? 'Отправка...' : 'Отправить заявку'}
           </button>

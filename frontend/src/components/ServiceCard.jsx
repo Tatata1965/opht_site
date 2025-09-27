@@ -1,6 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ServiceCard = ({ service }) => {
+  const navigate = useNavigate();
+
+  const handleAppointment = () => {
+    // Переходим на страницу записи с ID услуги
+    navigate(`/appointment?service=${service.id}`);
+  };
+
   return (
     <div style={{
       border: '1px solid #e0e0e0',
@@ -50,17 +58,20 @@ const ServiceCard = ({ service }) => {
         </p>
       )}
 
-      <button style={{
-        width: '100%',
-        padding: '10px',
-        backgroundColor: '#1976d2',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        marginTop: '15px',
-        fontSize: '0.9rem'
-      }}>
+      <button
+        onClick={handleAppointment}
+        style={{
+          width: '100%',
+          padding: '10px',
+          backgroundColor: '#1976d2',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginTop: '15px',
+          fontSize: '0.9rem'
+        }}
+      >
         Записаться
       </button>
     </div>
