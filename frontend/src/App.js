@@ -7,6 +7,8 @@ import AppointmentPage from './pages/AppointmentPage';
 import LoginPage from './pages/LoginPage'; // Импортируем новые страницы
 import RegisterPage from './pages/RegisterPage';
 import DoctorsPage from './pages/DoctorsPage';
+import AdminDashboard from './pages/AdminDashboard';
+import './App.css';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
           {/* Добавляем новые маршруты для авторизации */}
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
           {/* Маршрут для несуществующих страниц */}
           <Route path="*" element={<NotFound />} />

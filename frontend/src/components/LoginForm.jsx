@@ -10,62 +10,42 @@ const LoginForm = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log('📨 Отправляемые данные:', formData); // ← ДОБАВЬТЕ ЭТО
-  setIsLoading(true);
-  setError('');
+    e.preventDefault();
+    console.log('📨 Отправляемые данные:', formData);
+    setIsLoading(true);
+    setError('');
 
-  try {
-    const response = await fetch('http://localhost:8000/api/login/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await response.json(); // ← ДОБАВЬТЕ ЭТУ СТРОКУ
-    console.log('Ответ сервера:', data); // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+      const data = await response.json();
+      console.log('Ответ сервера:', data);
 
-    if (!response.ok) {
-      throw new Error(data.error || 'Ошибка входа');
+      if (!response.ok) {
+        throw new Error(data.error || data.detail || 'Ошибка входа');
+      }
+
+      // ⭐ ВАЖНО: Сохраняем токен И данные пользователя
+      localStorage.setItem('authToken', data.token);
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        console.log('✅ Данные пользователя сохранены:', data.user);
+      } else {
+        console.warn('⚠️ Сервер не вернул данные пользователя');
+      }
+
+      window.location.href = '/';
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
-
-    localStorage.setItem('authToken', data.token);
-    window.location.href = '/'; // ← Просто перезагружаем страницу
-
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setIsLoading(false);
-  }
-};
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   setError('');
-  //
-  //   try {
-  //     const response = await fetch('http://localhost:8000/api/login/', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-  //
-  //     if (!response.ok) {
-  //       throw new Error('Ошибка входа: проверьте логин и пароль');
-  //     }
-  //
-  //     const data = await response.json();
-  //     localStorage.setItem('authToken', data.token);
-  //     onLoginSuccess(); // Уведомляем родительский компонент об успешном входе
-  //
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  };
 
   const handleChange = (e) => {
     setFormData({

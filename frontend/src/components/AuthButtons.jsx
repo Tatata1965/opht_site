@@ -5,19 +5,35 @@ import { Link } from 'react-router-dom';
 const AuthButtons = () => {
   const isLoggedIn = !!localStorage.getItem('authToken');
 
+  // Получаем данные пользователя
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
+
+  // Проверяем является ли пользователь админом
+  const isAdmin = userData.is_staff || userData.is_superuser;
+
   const handleLogout = () => {
     localStorage.removeItem('authToken');
-    window.location.href = '/'; // Перезагружаем страницу
+    localStorage.removeItem('user');
+    window.location.href = '/';
   };
 
   if (isLoggedIn) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span style={{ color: '#4b5563' }}>Добро пожаловать!</span>
+        <span style={{ color: '#fbbf24', fontWeight: '500' }}>
+          Добро пожаловать!
+        </span>
+
+        {/* 👇 ПОКАЗЫВАЕМ СТАТИСТИКУ ТОЛЬКО АДМИНАМ 👇 */}
+        {isAdmin && (
+          <Link to="/admin/dashboard" className="btn btn-secondary">
+            📊 Статистика
+          </Link>
+        )}
+
         <button
           onClick={handleLogout}
           className="btn btn-secondary"
-          style={{ marginLeft: '10px' }}
         >
           Выйти
         </button>

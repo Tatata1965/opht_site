@@ -1,3 +1,4 @@
+/* ===== БАЗОВЫЕ СТИЛИ REACT ===== */
 .App {
   text-align: center;
 }
@@ -35,4 +36,529 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ===== СТИЛИ ДАШБОРДА ===== */
+
+/* Контейнер дашборда */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Заголовок дашборда */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.dashboard-header h1 {
+  color: #1e293b;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.refresh-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.refresh-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Сетка статистики - 4 КАРТОЧКИ */
+/* Контейнер для карточек статистики */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px; /* This creates space between cards */
+  justify-items: center; /* This centers the cards horizontally */
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content inside the card */
+  text-align: center; /* Centers text */
+  padding: 20px;
+  width: 100%; /* Makes card fill its grid cell */
+}
+
+/* Цвета для карточек (оставьте ваши существующие) */
+.stat-card.total { border-color: #3b82f6; background: #eff6ff; }
+.stat-card.confirmed { border-color: #10b981; background: #ecfdf5; }
+.stat-card.pending { border-color: #f59e0b; background: #fffbeb; }
+.stat-card.cancelled { border-color: #ef4444; background: #fef2f2; }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: inherit;
+  opacity: 0.1;
+}
+
+/* Цвета карточек */
+.stat-card.total {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff, #ffffff);
+}
+
+.stat-card.confirmed {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ecfdf5, #ffffff);
+}
+
+.stat-card.pending {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb, #ffffff);
+}
+
+.stat-card.cancelled {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2, #ffffff);
+}
+
+/* Иконки в карточках */
+.stat-icon {
+  font-size: 3rem;
+  margin-right: 20px;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* Контент карточек */
+.stat-content {
+  flex: 1;
+  text-align: left;
+}
+
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-label {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-percentage {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.stat-description {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Цвета процентов */
+.stat-card.confirmed .stat-percentage { color: #059669; }
+.stat-card.pending .stat-percentage { color: #d97706; }
+.stat-card.cancelled .stat-percentage { color: #dc2626; }
+
+/* Контейнер для графиков и списков */
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+@media (max-width: 968px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Секции с контентом */
+.chart-section {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f5f9;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-count {
+  background: #e2e8f0;
+  color: #475569;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Списки услуг и врачей */
+.services-list,
+.doctors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.service-item,
+.doctor-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.service-item:hover,
+.doctor-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6;
+  background: white;
+}
+
+/* Ранги в списках */
+.item-rank {
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.rank-badge {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.service-item:hover .rank-badge,
+.doctor-item:hover .rank-badge {
+  transform: scale(1.1);
+}
+
+/* Контент элементов */
+.item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name,
+.doctor-name {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* Мета-информация с ПРОБЕЛАМИ */
+.item-meta,
+.doctor-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Пробелы между элементами */
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.appointment-count {
+  color: #64748b;
+  font-weight: 600;
+  background: #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.price {
+  color: #059669;
+  font-weight: 700;
+  background: #d1fae5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.specialization {
+  color: #6b7280;
+  font-style: italic;
+  background: #f3f4f6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Ограничение длинных названий */
+.service-item .item-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Состояния загрузки и ошибок */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.error-container h2 {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.error-container button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.error-container button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+
+  .chart-section {
+    padding: 20px;
+  }
+
+  .service-item,
+  .doctor-item {
+    padding: 16px;
+  }
+
+  .item-meta,
+  .doctor-meta {
+    gap: 12px;
+  }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-container {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.stat-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Улучшенные тени и градиенты */
+.stat-card.total .stat-icon {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card.confirmed .stat-icon {
+  background: linear-gradient(135deg, #10b981, #047857);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card.pending .stat-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card.cancelled .stat-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Дополнительные улучшения */
+
+/* Индикатор новых данных */
+.data-freshness {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Ховер-эффекты для кнопок */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Улучшенные скроллбары */
+.chart-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chart-section::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.chart-section::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.chart-section::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
