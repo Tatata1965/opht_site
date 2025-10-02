@@ -68,16 +68,19 @@ class DashboardStatsAPIView(APIView):
         confirmed_appointments = Appointment.objects.filter(status='confirmed').count()
         pending_appointments = Appointment.objects.filter(status='pending').count()
         cancelled_appointments = Appointment.objects.filter(status='cancelled').count()
+        completed_appointments = Appointment.objects.filter(status='completed').count()
 
         # 2. Расчет процентов от общего числа
         if total_appointments > 0:
             confirmed_rate = round((confirmed_appointments / total_appointments) * 100, 2)
             pending_rate = round((pending_appointments / total_appointments) * 100, 2)
             cancelled_rate = round((cancelled_appointments / total_appointments) * 100, 2)
+            completed_rate = round((completed_appointments / total_appointments) * 100, 2)
         else:
             confirmed_rate = 0
             pending_rate = 0
             cancelled_rate = 0
+            completed_rate = 0
 
         # 3. Популярные услуги и врачи
         popular_services = Service.objects.annotate(
@@ -97,6 +100,8 @@ class DashboardStatsAPIView(APIView):
                 'pending_rate': pending_rate,  # ← добавили
                 'cancelled_appointments': cancelled_appointments,
                 'cancelled_rate': cancelled_rate,  # ← добавили
+                'completed_appointments': completed_appointments,
+                'completed_rate': completed_rate,
             },
             'popular_services': PopularServiceSerializer(popular_services, many=True).data,
             'popular_doctors': PopularDoctorSerializer(popular_doctors, many=True).data

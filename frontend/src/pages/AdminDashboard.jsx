@@ -66,7 +66,14 @@ const AdminDashboard = () => {
                             <div className="stat-description">Коэффициент подтверждения</div>
                         </div>
                     </div>
-
+                    <div className="stat-card completed">
+                        <div className="stat-icon">🏁</div>
+                        <div className="stat-content">
+                            <div className="stat-number">{stats.general_stats.completed_appointments}</div>
+                            <div className="stat-label">Завершенные</div>
+                            <div className="stat-percentage">{stats.general_stats.completed_rate}%</div>
+                        </div>
+                    </div>
                     <div className="stat-card pending">
                         <div className="stat-icon">⏳</div>
                         <div className="stat-content">

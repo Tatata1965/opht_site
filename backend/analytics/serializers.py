@@ -32,3 +32,5 @@ class GeneralStatsSerializer(serializers.Serializer):
     pending_rate = serializers.FloatField()          # ← добавили
     cancelled_appointments = serializers.IntegerField()
     cancelled_rate = serializers.FloatField()        # ← добавили
+    completed_appointments = serializers.IntegerField()
+    completed_rate = serializers.FloatField()

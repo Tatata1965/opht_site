@@ -88,7 +88,7 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-/* Сетка статистики - 4 КАРТОЧКИ */
+/* Сетка статистики - 5 КАРТОЧЕК */
 /* Контейнер для карточек статистики */
 .stats-grid {
   display: grid;
@@ -148,6 +148,10 @@
   border-color: #ef4444;
   background: linear-gradient(135deg, #fef2f2, #ffffff);
 }
+.stat-card.completed {
+  border-color: #059669; /* Темно-зеленый */
+  background: linear-gradient(135deg, #d1fae5, #ffffff);
+}
 
 /* Иконки в карточках */
 .stat-icon {
@@ -198,6 +202,8 @@
 .stat-card.confirmed .stat-percentage { color: #059669; }
 .stat-card.pending .stat-percentage { color: #d97706; }
 .stat-card.cancelled .stat-percentage { color: #dc2626; }
+.stat-card.completed .stat-percentage { color: #047857;
+}
 
 /* Контейнер для графиков и списков */
 .charts-container {
@@ -486,6 +492,7 @@
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
 .stat-card:nth-child(3) { animation-delay: 0.3s; }
 .stat-card:nth-child(4) { animation-delay: 0.4s; }
+.stat-card:nth-child(5) { animation-delay: 0.5s; }
 
 /* Улучшенные тени и градиенты */
 .stat-card.total .stat-icon {
@@ -497,6 +504,13 @@
 
 .stat-card.confirmed .stat-icon {
   background: linear-gradient(135deg, #10b981, #047857);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card.completed .stat-icon {
+  background: linear-gradient(135deg, #059669, #047857);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
