@@ -118,6 +118,7 @@ const ServicesPage = () => {
           gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
           gap: '20px'
         }}>
+
           {filteredServices.map(service => (
             <ServiceCard key={service.id} service={service} />
           ))}
